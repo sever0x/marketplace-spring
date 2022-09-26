@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    username: bestuser
+    password: bestuser
+    url: jdbc:mysql://localhost:3306/dotamarketplace?useSSL=false
