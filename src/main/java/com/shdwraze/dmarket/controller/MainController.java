@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -31,7 +32,15 @@ public class MainController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping({"/", ""})
-    public String index() {
+    public String index(Principal principal, Model model) {
+        if (principal != null) {
+            Account account = accountRepository.findByLogin(principal.getName());
+            model.addAttribute("email", account.getAccountInfo().getEmail());
+            model.addAttribute("phone", account.getAccountInfo().getPhone());
+            model.addAttribute("steamID", account.getAccountInfo().getSteamID());
+            model.addAttribute("balance", account.getAccountInfo().getBalance());
+            model.addAttribute("regDate", account.getAccountInfo().getRegistrationDate());
+        }
         return "index";
     }
 

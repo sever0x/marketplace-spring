@@ -9,9 +9,27 @@
 <body>
     <h1>START PAGE</h1>
     <div sec:authorize="isAuthenticated()">
-        <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+        <span th:text="${'Login: ' + #authentication.getPrincipal().getUsername()}"></span>
+        <br>
+        <span th:text="${'Email: ' + email}"></span>
+        <br>
+        <span th:text="${'Phone: ' + phone}"></span>
+        <br>
+        <span>STEAM_ID:
+            <span th:if="${steamID!=null and #strings.length(steamID)>0}">
+                <a th:href="@{https://steamcommunity.com/profiles/{steam}(steam=${steamID})}">account</a>
+            </span>
+            <span th:unless="${steamID!=null and #strings.length(steamID)>0}">
+                <a th:href="@{/link}">Link Steam Account</a>
+            </span>
+        </span>
+        <br>
+        <span th:text="${'Balance: ' + balance}"></span>
+        <br>
+        <span th:text="${'Registration date: ' + regDate}"></span>
+        <br>
         <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sing Out">
+            <input type="submit" value="Sign Out">
         </form>
     </div>
     <div sec:authorize="isAnonymous()">
