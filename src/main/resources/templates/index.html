@@ -7,10 +7,10 @@
     <title>Index</title>
 </head>
 <body>
-    <h1>START PAGE</h1>
     <div sec:authorize="isAuthenticated()">
-        <span th:text="${'Login: ' + #authentication.getPrincipal().getUsername()}"></span>
-        <br>
+        <h1 style="text-transform: uppercase">Hello,
+            <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+        </h1>
         <span th:text="${'Email: ' + email}"></span>
         <br>
         <span th:text="${'Phone: ' + phone}"></span>
@@ -27,6 +27,9 @@
         <span th:text="${'Balance: ' + balance}"></span>
         <br>
         <span th:text="${'Registration date: ' + regDate}"></span>
+        <br>
+        <br>
+        <a th:href="@{/settings}">Settings</a>
         <br>
         <form th:action="@{/logout}" method="post">
             <input type="submit" value="Sign Out">

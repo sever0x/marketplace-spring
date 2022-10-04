@@ -34,6 +34,7 @@ public class MainController {
     @GetMapping({"/", ""})
     public String index(Principal principal, Model model) {
         if (principal != null) {
+            System.out.println(principal.getName());
             Account account = accountRepository.findByLogin(principal.getName());
             model.addAttribute("email", account.getAccountInfo().getEmail());
             model.addAttribute("phone", account.getAccountInfo().getPhone());

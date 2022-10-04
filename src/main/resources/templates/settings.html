@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+</head>
+<body>
+<form th:action="@{/settings/apply}" th:object="${account}" method="post">
+    Login: <input type="text" th:field="*{login}">
+    <br>
+    Password: <input type="password" th:field="*{password}">
+    <br>
+    Email: <input type="text" th:field="*{accountInfo.email}">
+    <br>
+    Phone: <input type="text" th:field="*{accountInfo.phone}">
+    <br>
+    <br>
+    <input type="submit" value="Apply changes">
+</form>
+</body>
+</html>
