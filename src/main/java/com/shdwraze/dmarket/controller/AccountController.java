@@ -3,10 +3,7 @@ package com.shdwraze.dmarket.controller;
 import com.shdwraze.dmarket.entity.Account;
 import com.shdwraze.dmarket.repo.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +15,8 @@ import java.security.Principal;
 public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @GetMapping("/settings")
     public String showAccountSettings(Principal principal, Model model) {
@@ -30,11 +29,11 @@ public class AccountController {
     @PostMapping("/settings/apply")
     public String applyChangesInAccount(Principal principal, Account account) {
         Account updAccount = accountRepository.findByLogin(principal.getName());
-        System.out.println(principal);
 
         updAccount.getAccountInfo().setEmail(account.getAccountInfo().getEmail());
         updAccount.getAccountInfo().setPhone(account.getAccountInfo().getPhone());
         updAccount.setLogin(account.getLogin());
+        updAccount.setPassword(encoder.encode(account.getPassword()));
 
         accountRepository.save(updAccount);
 
