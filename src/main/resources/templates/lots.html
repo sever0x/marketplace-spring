@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Lots</title>
+</head>
+<body>
+<h1>LOTS</h1>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Item</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="lot : ${lots}">
+        <th th:text="${lot.id}"></th>
+        <th th:text="${lot.item.name}"></th>
+        <th th:text="${lot.description}"></th>
+        <th th:text="${lot.price + '$'}"></th>
+        <th th:text="${lot.status}"></th>
+    </tr>
+</table>
+<br>
+<br>
+<a th:href="@{/}">Main page</a>
+</body>
+</html>

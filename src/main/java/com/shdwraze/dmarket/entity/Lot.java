@@ -37,5 +37,5 @@ public class Lot {
     private double price;
 
     @Enumerated(EnumType.STRING)
-    private LotStatus status;
+    private LotStatus status = LotStatus.AVAILABLE;
 }

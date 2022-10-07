@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new lot</title>
+</head>
+<body>
+<form th:action="@{/lots/add}" method="post">
+    <h3>Item Information</h3>
+    Name: <input type="text" th:field="*{item.name}" required>
+    <br><br>
+    Type: <select th:name="type">
+            <option th:each="type : ${T(com.shdwraze.dmarket.entity.enums.Type).values()}"
+            th:value="${type}" th:text="${type}"></option>
+        </select>
+    <br><br>
+    Hero: <select th:name="heroID">
+            <option value="1000" text="Select Hero"></option>
+            <option th:each="hero : ${heroes}"
+            th:value="${hero.id}" th:text="${hero.name}"></option>
+        </select>
+    <br><br>
+    Rarity: <select th:name="rarity">
+            <option th:each="rarity : ${T(com.shdwraze.dmarket.entity.enums.Rarity).values()}"
+            th:value="${rarity}" th:text="${rarity}"></option>
+        </select>
+    <br><br>
+    Quality: <select th:name="quality">
+            <option th:each="quality : ${T(com.shdwraze.dmarket.entity.enums.Quality).values()}"
+            th:value="${quality}" th:text="${quality}"></option>
+        </select>
+    <br><br>
+    <h3>Lot Information</h3>
+    Description: <br>
+    <textarea rows="5" cols="33" th:field="*{lot.description}"></textarea>
+    <br><br>
+    Price: <input type="number" step="0.01" th:field="*{lot.price}" required>
+    <br><br>
+    <input type="submit" value="Add">
+</form>
+</body>
+</html>

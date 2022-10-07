@@ -1,5 +1,5 @@
 package com.shdwraze.dmarket.entity.enums;
 
 public enum Type {
-    OUTFIT, COURIER, WARD, TREASURE, KEYS, SCREEN, RUNES, HUD, PLAYERCARD, ANNOUNCER, OTHER
+    Outfit, Courier, Ward, Treasure, Keys, Screen, Runes, Hud, Card, Announcer, Other
 }
