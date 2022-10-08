@@ -68,12 +68,42 @@ public class LotController {
         lot.setSeller(account);
         lotRepository.save(lot);
 
-        return "redirect:/";
+        return "redirect:/lots";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteLot(@PathVariable int id) {
         lotRepository.deleteById(id);
+
+        return "redirect:/lots";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String getInfoForEditingLot(@PathVariable(name = "id") int id, Model model) {
+        Lot lot = lotRepository.findById(id).orElse(null);
+        List<Hero> heroes = heroRepository.findAll();
+
+        model.addAttribute("lot", lot);
+        model.addAttribute("heroes", heroes);
+
+        return "lot-edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String updateLotAfterEdit(@PathVariable(name = "id") int id, Lot lot) {
+        Lot l = lotRepository.findById(id).orElse(null);
+
+        if (l != null) {
+            l.setDescription(lot.getDescription());
+            l.setPrice(lot.getPrice());
+            l.getItem().setHero(lot.getItem().getHero());
+            l.getItem().setType(lot.getItem().getType());
+            l.getItem().setRarity(lot.getItem().getRarity());
+            l.getItem().setQuality(lot.getItem().getQuality());
+            l.getItem().setName(lot.getItem().getName());
+
+            lotRepository.save(l);
+        }
 
         return "redirect:/lots";
     }

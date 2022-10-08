@@ -20,8 +20,7 @@ public class Lot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "items_id")
     private Item item;
 
