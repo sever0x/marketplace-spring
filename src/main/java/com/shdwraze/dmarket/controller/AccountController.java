@@ -39,4 +39,12 @@ public class AccountController {
 
         return "redirect:/logout";
     }
+
+    @GetMapping("/purchases")
+    public String showAllPurchases(Principal principal, Model model) {
+        Account account = accountRepository.findByLogin(principal.getName());
+        model.addAttribute("purchases", account.getPurchases());
+
+        return "purchases";
+    }
 }

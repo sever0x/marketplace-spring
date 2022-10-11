@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Purchases</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Seller</th>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="purchase : ${purchases}">
+        <td th:text="${purchase.id}"></td>
+        <td th:text="${purchase.lot.item.name}"></td>
+        <td th:text="${purchase.lot.seller.login}"></td>
+        <td th:text="${purchase.date}"></td>
+        <td th:text="${purchase.status}"></td>
+    </tr>
+</table>
+<br><br>
+<a th:href="@{/}">Back to main page</a>
+</body>
+</html>

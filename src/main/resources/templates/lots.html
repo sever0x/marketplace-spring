@@ -19,21 +19,21 @@
         <th>Delete</th>
     </tr>
     <tr th:each="lot : ${lots}">
-        <th th:text="${lot.id}"></th>
-        <th th:text="${lot.item.name}"></th>
-        <th th:text="${lot.description}"></th>
-        <th th:text="${lot.price + '$'}"></th>
-        <th th:text="${lot.status}"></th>
-        <th>
+        <td th:text="${lot.id}"></td>
+        <td th:text="${lot.item.name}"></td>
+        <td th:text="${lot.description}"></td>
+        <td th:text="${lot.price + '$'}"></td>
+        <td th:text="${lot.status}"></td>
+        <td>
             <form th:action="@{/lots/edit/{id}(id=${lot.id})}" method="get">
                 <input type="submit" value="Edit">
             </form>
-        </th>
-        <th>
+        </td>
+        <td>
             <form th:action="@{/lots/delete/{id}(id=${lot.id})}" method="post">
                 <input type="submit" value="Delete">
             </form>
-        </th>
+        </td>
     </tr>
 </table>
 <br>
