@@ -8,7 +8,9 @@
 </head>
 <body>
 <p th:each="lot : ${lots}">
-    <a th:href="@{/market/{id}(id=${lot.id})}" th:text="${lot.item.name}"></a>
+    <a th:href="@{/market/{id}(id=${lot.id})}" th:text="${lot.item.name}"></a>. <b th:text="'Seller: ' + ${lot.seller.login}"></b>
 </p>
+<br><br>
+<a th:href="@{/}">Back to main page</a>
 </body>
 </html>
