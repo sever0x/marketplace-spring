@@ -15,6 +15,8 @@
 <br>
 <p>Additional info: <span th:text="${lot.item.rarity} + ', ' +  ${lot.item.type} + ', ' + ${lot.item.quality}"></span></p>
 <br>
-<input type="submit" value="Buy">
+<form th:action="@{/market/{id}(id=${lot.id})}" method="post">
+    <input type="submit" value="Buy">
+</form>
 </body>
 </html>
