@@ -1,5 +1,6 @@
 package com.shdwraze.dmarket.config;
 
+import com.shdwraze.dmarket.entity.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
+                .antMatchers("/lots/**").hasAuthority(Role.SELLER.getAuthority())
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

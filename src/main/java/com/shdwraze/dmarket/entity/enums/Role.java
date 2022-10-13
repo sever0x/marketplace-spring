@@ -1,5 +1,12 @@
 package com.shdwraze.dmarket.entity.enums;
 
-public enum Role {
-    ADMIN, CUSTOMER, SELLER
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+    ADMIN, CUSTOMER, SELLER;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }
