@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -88,6 +87,24 @@ public class AccountController {
     public String updateAccountRole(Principal principal) {
         Account account = accountRepository.findByLogin(principal.getName());
         account.setRole(Role.SELLER);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + account.getRole().getAuthority()));
+        authorities.add(new SimpleGrantedAuthority(account.getRole().getAuthority()));
+        userDetails.setAuthorities(authorities);
+
+        System.out.println("BEFORE -> " + SecurityContextHolder.getContext().getAuthentication());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+                SecurityContextHolder.getContext().getAuthentication().getCredentials(),
+                userDetails.getAuthorities()
+        );
+        token.setDetails(SecurityContextHolder.getContext().getAuthentication().getDetails());
+        SecurityContextHolder.getContext().setAuthentication(token);
+        System.out.println("AFTER -> " + SecurityContextHolder.getContext().getAuthentication());
+
         accountRepository.save(account);
 
         return "redirect:/";
