@@ -1,9 +1,10 @@
 package com.shdwraze.dmarket.config;
 
 import com.shdwraze.dmarket.entity.enums.Role;
+import com.shdwraze.dmarket.service.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,12 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.sql.DataSource;
-
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+//    @Autowired
+//    private DataSource dataSource;
     @Autowired
-    private DataSource dataSource;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,12 +37,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.jdbcAuthentication().dataSource(dataSource)
+//                .passwordEncoder(encoder())
+//                .usersByUsernameQuery("select login, password, 'true' as enabled from accounts where login=?")
+//                .authoritiesByUsernameQuery("select login, role from accounts where login=?");
+//    }
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .passwordEncoder(encoder())
-                .usersByUsernameQuery("select login, password, 'true' as enabled from accounts where login=?")
-                .authoritiesByUsernameQuery("select login, role from accounts where login=?");
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider());
     }
 
     @Bean
@@ -49,8 +55,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+//    @Bean
+//    public AuthenticationManager authenticationProvider() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
+
     @Bean
-    public AuthenticationManager authenticationProvider() throws Exception {
-        return super.authenticationManagerBean();
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(encoder());
+        daoAuthenticationProvider.setUserDetailsService(this.customUserDetailsService);
+
+        return daoAuthenticationProvider;
     }
 }
