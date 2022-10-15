@@ -1,14 +1,9 @@
 package com.shdwraze.dmarket.controller;
 
 import com.shdwraze.dmarket.entity.Account;
-import com.shdwraze.dmarket.entity.enums.Role;
 import com.shdwraze.dmarket.repo.AccountRepository;
-import com.shdwraze.dmarket.service.security.CustomUserDetails;
+import com.shdwraze.dmarket.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,13 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AccountService accountService;
     @Autowired
     private PasswordEncoder encoder;
 
@@ -44,9 +39,7 @@ public class AccountController {
 
         if (!updAccount.getLogin().equals(account.getLogin())) {
             updAccount.setLogin(account.getLogin());
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-            userDetails.setUsername(updAccount.getLogin());
+            accountService.setNewLogin(SecurityContextHolder.getContext().getAuthentication(), account.getLogin());
         }
 
         if (!account.getPassword().equals("")) {
@@ -85,27 +78,10 @@ public class AccountController {
 
     @PostMapping("/trade")
     public String updateAccountRole(Principal principal) {
-        Account account = accountRepository.findByLogin(principal.getName());
-        account.setRole(Role.SELLER);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + account.getRole().getAuthority()));
-        authorities.add(new SimpleGrantedAuthority(account.getRole().getAuthority()));
-        userDetails.setAuthorities(authorities);
-
-        System.out.println("BEFORE -> " + SecurityContextHolder.getContext().getAuthentication());
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
-                SecurityContextHolder.getContext().getAuthentication().getCredentials(),
-                userDetails.getAuthorities()
-        );
-        token.setDetails(SecurityContextHolder.getContext().getAuthentication().getDetails());
-        SecurityContextHolder.getContext().setAuthentication(token);
-        System.out.println("AFTER -> " + SecurityContextHolder.getContext().getAuthentication());
-
-        accountRepository.save(account);
+        if (principal != null) {
+            accountService.updateAccountPermission(principal,
+                    SecurityContextHolder.getContext().getAuthentication());
+        }
 
         return "redirect:/";
     }

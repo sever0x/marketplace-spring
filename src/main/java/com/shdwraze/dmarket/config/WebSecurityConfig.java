@@ -14,8 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Autowired
-//    private DataSource dataSource;
+
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
@@ -37,14 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.jdbcAuthentication().dataSource(dataSource)
-//                .passwordEncoder(encoder())
-//                .usersByUsernameQuery("select login, password, 'true' as enabled from accounts where login=?")
-//                .authoritiesByUsernameQuery("select login, role from accounts where login=?");
-//    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
@@ -54,11 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    @Bean
-//    public AuthenticationManager authenticationProvider() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {

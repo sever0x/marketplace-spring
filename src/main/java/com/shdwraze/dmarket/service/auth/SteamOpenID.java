@@ -1,4 +1,4 @@
-package com.shdwraze.dmarket.service;
+package com.shdwraze.dmarket.service.auth;
 import org.openid4java.association.AssociationException;
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;

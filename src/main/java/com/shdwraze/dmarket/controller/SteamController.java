@@ -1,8 +1,7 @@
 package com.shdwraze.dmarket.controller;
 
-import com.shdwraze.dmarket.repo.AccountRepository;
 import com.shdwraze.dmarket.service.AccountService;
-import com.shdwraze.dmarket.service.SteamOpenID;
+import com.shdwraze.dmarket.service.auth.SteamOpenID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
