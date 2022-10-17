@@ -20,15 +20,8 @@ public class CustomUserDetails implements UserDetails {
         this.authorities = authorities;
     }
 
-    //    public CustomUserDetails(Account account) {
-//        this.account = account;
-//    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.account.getRole().getAuthority()));
-
         return authorities;
     }
 
